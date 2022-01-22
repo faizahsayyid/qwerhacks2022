@@ -7,15 +7,9 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import { RequestCard } from "./requestCard";
 
 export const AccessRequests = ({navigation}) => {
-  
+
   return (
-    <View style={[{backgroundColor: "#F3F7F7"}, t.p8, t.hFull, t.pT20]}>
-
-      <TouchableHighlight>
-        <MaterialIcons style={[t.mB8]} name="arrow-back" size={24} color="black" />
-      </TouchableHighlight>
-
-      <Text style={[t.textSm, t.uppercase, t.fontBold, t.mB4, t.textGray700]}>Access Requests</Text>
+    <View style={[{backgroundColor: "#F3F7F7"}, t.p8, t.hFull]}>
 
       <RequestCard username="ascend2001" status="Pending"/>
       <RequestCard username="indoorliving" status="Received"/>
