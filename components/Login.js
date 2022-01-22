@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 
 export const Login = () => {
-  const { userId } = useContext(GlobalContext);
+  const { setUserId } = useContext(GlobalContext);
   return (
     <View>
       <Text>Username</Text>

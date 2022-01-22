@@ -3,7 +3,7 @@ import GlobalReducer from "./GlobalReducer";
 import { GLOBAL_ACTIONS } from "./GlobalActions";
 
 const initialState = {
-  userId: "hello",
+  userId: "",
 };
 
 export const GlobalContext = createContext(initialState);
