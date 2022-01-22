@@ -1,11 +1,11 @@
 import { Text, View, Pressable } from "react-native";
 import { t } from "react-native-tailwindcss";
 import { LoginSignUpForm } from "./LoginSignUpForm";
-import useLogin from "../hooks/useLogin";
+import useSignUp from "../hooks/useSignUp";
 
-export const Login = () => {
-  const { handleUsernameChange, handlePasswordChange, handleLogin } =
-    useLogin();
+export const SignUp = () => {
+  const { handleUsernameChange, handlePasswordChange, handleSignUp } =
+    useSignUp();
 
   return (
     <View
@@ -20,7 +20,7 @@ export const Login = () => {
     >
       <View style={[t.w3_4, t.flex, t.justifyCenter, t.itemsStart]}>
         <Text style={[t.text4xl, t.textTeal500, t.fontBold, t.mB10]}>
-          Log in
+          Sign Up
         </Text>
         <LoginSignUpForm
           onPasswordChange={handlePasswordChange}
@@ -28,7 +28,7 @@ export const Login = () => {
         />
         <Pressable
           style={[t.bgTeal500, t.wFull, t.roundedFull, t.pY3, t.mY32]}
-          onPress={handleLogin}
+          onPress={handleSignUp}
         >
           <Text
             style={[
@@ -39,7 +39,7 @@ export const Login = () => {
               t.textLg,
             ]}
           >
-            Log in
+            Sign Up
           </Text>
         </Pressable>
       </View>
