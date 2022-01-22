@@ -1,23 +1,12 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { GlobalProvider } from "./contexts/GlobalContext";
+import DocumentUploadCard from './components/DocumentUploadCard'
+import MyStack from './navigators/stack'
+import { NavigationContainer } from '@react-navigation/native'
+import STIDashboard from './components/STIDashboard';
 
-export default function App() {
-  return (
-    <GlobalProvider>
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <StatusBar style="auto" />
-      </View>
-    </GlobalProvider>
-  );
+export default function App(){
+ return(
+  <NavigationContainer>
+    <MyStack />
+  </NavigationContainer>
+ )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
