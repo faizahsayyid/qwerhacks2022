@@ -1,11 +1,11 @@
-import { Text, View, Pressable } from "react-native";
+import { Text, View, TouchableHighlight } from "react-native";
 import { t } from "react-native-tailwindcss";
 import { LoginSignUpForm } from "./LoginSignUpForm";
 import useLogin from "../hooks/useLogin";
 
-export const Login = ({navigation}) => {
-  const { handleUsernameChange, handlePasswordChange, handleLogin } =
-    useLogin();
+export const Login = ({ navigation }) => {
+  const { handleUsernameChange, handlePasswordChange, handleLogin, error } =
+    useLogin(navigation);
 
   return (
     <View
@@ -15,7 +15,7 @@ export const Login = ({navigation}) => {
         t.flex,
         t.justifyEnd,
         t.itemsCenter,
-        {backgroundColor: "#F3F7F7"},
+        { backgroundColor: "#F3F7F7" },
       ]}
     >
       <View style={[t.w3_4, t.flex, t.justifyCenter, t.itemsStart]}>
@@ -26,7 +26,12 @@ export const Login = ({navigation}) => {
           onPasswordChange={handlePasswordChange}
           onUsernameChange={handleUsernameChange}
         />
-        <Pressable
+        {error && (
+          <Text style={[t.textRed500, t.selfCenter]}>
+            Username or password is incorrect
+          </Text>
+        )}
+        <TouchableHighlight
           style={[t.bgTeal500, t.wFull, t.roundedFull, t.pY3, t.mY32]}
           onPress={handleLogin}
         >
@@ -41,7 +46,7 @@ export const Login = ({navigation}) => {
           >
             Log in
           </Text>
-        </Pressable>
+        </TouchableHighlight>
       </View>
     </View>
   );

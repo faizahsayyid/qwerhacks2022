@@ -3,9 +3,14 @@ import { t } from "react-native-tailwindcss";
 import { LoginSignUpForm } from "./LoginSignUpForm";
 import useSignUp from "../hooks/useSignUp";
 
-export const SignUp = ({navigation}) => {
-  const { handleUsernameChange, handlePasswordChange, handleSignUp } =
-    useSignUp();
+export const SignUp = ({ navigation }) => {
+  const {
+    handleUsernameChange,
+    handlePasswordChange,
+    handleSignUp,
+    error,
+    hasSignedUp,
+  } = useSignUp(navigation);
 
   return (
     <View
@@ -15,7 +20,7 @@ export const SignUp = ({navigation}) => {
         t.flex,
         t.justifyEnd,
         t.itemsCenter,
-        {backgroundColor: "#F3F7F7"},
+        { backgroundColor: "#F3F7F7" },
       ]}
     >
       <View style={[t.w3_4, t.flex, t.justifyCenter, t.itemsStart]}>
@@ -26,6 +31,10 @@ export const SignUp = ({navigation}) => {
           onPasswordChange={handlePasswordChange}
           onUsernameChange={handleUsernameChange}
         />
+        {error && <Text style={[t.textRed500, t.selfCenter]}>{error}</Text>}
+        {hasSignedUp && (
+          <Text style={[t.textTeal500, t.selfCenter]}>Sign up successful!</Text>
+        )}
         <Pressable
           style={[t.bgTeal500, t.wFull, t.roundedFull, t.pY3, t.mY32]}
           onPress={handleSignUp}
