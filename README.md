@@ -1,1 +1,0 @@
-# qwerhacks2022
