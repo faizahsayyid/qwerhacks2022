@@ -12,7 +12,7 @@ export const SearchUserListItem = ({ username }) => {
         t.itemsCenter,
         t.wFull,
         t.bgWhite,
-        t.p5,
+        t.p4,
         t.roundedLg,
         t.mB2,
       ]}

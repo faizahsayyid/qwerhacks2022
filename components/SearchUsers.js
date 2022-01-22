@@ -9,50 +9,44 @@ export const SearchUsers = () => {
   return (
     <View
       style={[
-        t.bgTeal100,
+        {backgroundColor: "#F3F7F7"},
         t.hFull,
-        t.wFull,
-        t.flex,
-        t.justifyCenter,
-        t.itemsCenter,
+        t.p8,
+        t.pT20
       ]}
     >
-      <View
-        style={[t.flex, t.justifyStart, t.itemsStart, t.w3_4, t.hFull, t.mT40]}
+      <TouchableHighlight
+        onPress={() => {}}
+        underlayColor={color.white}
+        style={[t.mB4, t._mL2, t.roundedLg]}
       >
-        <TouchableHighlight
-          onPress={() => {}}
-          underlayColor={color.gray100}
-          style={[t.mB6, t._mL2, t.roundedLg]}
-        >
-          <MaterialIcons
-            name="arrow-back"
-            size={24}
-            color={color.gray700}
-            style={[t.p2]}
-          />
-        </TouchableHighlight>
-        <Text style={[t.uppercase, t.fontBold, t.mB4, t.textGray700]}>
-          Search By Username
-        </Text>
-        <TextInput
-          style={[
-            t.wFull,
-            t.p3,
-            t.bgWhite,
-            t.roundedLg,
-            t.textLg,
-            t.border2,
-            t.borderTeal500,
-            t.mB10,
-            t.textGray700,
-          ]}
-          placeholder="hello"
+        <MaterialIcons
+          name="arrow-back"
+          size={24}
+          color={color.gray700}
+          style={[t.p2]}
         />
-        {users.map((username, index) => (
-          <SearchUserListItem username={username} key={index} />
-        ))}
-      </View>
+      </TouchableHighlight>
+      <Text style={[t.uppercase, t.fontBold, t.mB4, t.textGray700]}>
+        Search By Username
+      </Text>
+      <TextInput
+        style={[
+          t.wFull,
+          t.p3,
+          t.bgWhite,
+          t.roundedLg,
+          t.textLg,
+          t.border2,
+          t.borderTeal500,
+          t.mB8,
+          t.textGray700,
+        ]}
+        placeholder="hello"
+      />
+      {users.map((username, index) => (
+        <SearchUserListItem username={username} key={index} />
+      ))}
     </View>
   );
 };
