@@ -15,7 +15,7 @@ export const Login = () => {
         t.flex,
         t.justifyEnd,
         t.itemsCenter,
-        t.bgTeal100,
+        {backgroundColor: "#F3F7F7"},
       ]}
     >
       <View style={[t.w3_4, t.flex, t.justifyCenter, t.itemsStart]}>
@@ -27,7 +27,7 @@ export const Login = () => {
           onUsernameChange={handleUsernameChange}
         />
         <Pressable
-          style={[t.bgTeal500, t.wFull, t.rounded, t.pY3, t.mY32]}
+          style={[t.bgTeal500, t.wFull, t.roundedFull, t.pY3, t.mY32]}
           onPress={handleLogin}
         >
           <Text
