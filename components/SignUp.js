@@ -3,7 +3,7 @@ import { t } from "react-native-tailwindcss";
 import { LoginSignUpForm } from "./LoginSignUpForm";
 import useSignUp from "../hooks/useSignUp";
 
-export const SignUp = () => {
+export const SignUp = ({navigation}) => {
   const { handleUsernameChange, handlePasswordChange, handleSignUp } =
     useSignUp();
 

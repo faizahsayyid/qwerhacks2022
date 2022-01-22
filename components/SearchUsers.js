@@ -4,7 +4,7 @@ import { t, color } from "react-native-tailwindcss";
 import { MaterialIcons } from "@expo/vector-icons";
 import useSearchUsers from "../hooks/useSearchUsers";
 
-export const SearchUsers = () => {
+export const SearchUsers = ({navigation}) => {
   const { users, setQuery, isLoading, query } = useSearchUsers();
 
   const onQueryChange = (text) => {

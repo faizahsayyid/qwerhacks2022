@@ -8,7 +8,7 @@ import DocumentUploadCard from '../components/DocumentUploadCard';
 const Stack=createStackNavigator();
 function MyStack(){
     return(
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Landing Page" component={Landing}/>
             <Stack.Screen name="Login Page" component={Login} />
             <Stack.Screen name="Signup Page" component={SignUp} />

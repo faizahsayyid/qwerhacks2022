@@ -6,8 +6,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { GlobalContext } from "../contexts/GlobalContext";
 import { RequestCard } from "./requestCard";
 
-export const AccessRequests = () => {
-  const { setUserId } = useContext(GlobalContext);
+export const AccessRequests = ({navigation}) => {
+  
   return (
     <View style={[{backgroundColor: "#F3F7F7"}, t.p8, t.hFull, t.pT20]}>
 

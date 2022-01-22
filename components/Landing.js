@@ -4,7 +4,7 @@ import { t } from "react-native-tailwindcss";
 
 export const Landing = ({navigation}) => {
   return (
-    <View style={[t.flex, t.hFull, t.wFull, t.justifyCenter, t.itemsCenter]}>
+    <View style={[t.flex, t.hFull, t.wFull, t.justifyCenter, t.itemsCenter, t.bgWhite]}>
       <Text style={[t.text5xl, t.fontBold, t.textTeal500]}>STDetector</Text>
       {/* <Image
         source={require("../assets/undraw_spread_love_r9jb.png")}
