@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { SearchUsers } from "./components/SearchUsers";
 import { GlobalProvider } from "./contexts/GlobalContext";
 
 export default function App() {
