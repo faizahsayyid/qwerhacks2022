@@ -25,7 +25,9 @@ export const AccessRequests = ({navigation}) => {
             const sen = record.get('senderID');
             const id = userId == rec ? sen : rec;
 
-            let username = await base("Users").find(id, function(err, record) {
+            let username = ""
+
+            await base("Users").find(id, function(err, record) {
               if (err) { console.error(err); return; }
               console.log('Found', record.get('username'));
               username = record.get('username')
