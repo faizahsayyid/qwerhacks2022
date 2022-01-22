@@ -7,7 +7,11 @@ export const LoginSignUpForm = ({ onUsernameChange, onPasswordChange }) => {
       <Text style={label}>Username</Text>
       <TextInput style={input} onChange={onUsernameChange} />
       <Text style={label}>Password</Text>
-      <TextInput style={input} onChange={onPasswordChange} />
+      <TextInput
+        secureTextEntry={true}
+        style={input}
+        onChange={onPasswordChange}
+      />
     </>
   );
 };
