@@ -1,19 +1,23 @@
-import React from "react";
 import { SearchUserListItem } from "./SearchUserListItem";
 import { Text, View, TextInput, TouchableHighlight } from "react-native";
 import { t, color } from "react-native-tailwindcss";
 import { MaterialIcons } from "@expo/vector-icons";
+import useSearchUsers from "../hooks/useSearchUsers";
 
 export const SearchUsers = () => {
-  const users = ["fyfy", "indoorliving", "sampull"];
+  const { users, setQuery, isLoading, query } = useSearchUsers();
+
+  const onQueryChange = (text) => {
+    if (text.length > 2) {
+      setQuery(text);
+    } else if (text.length == 0) {
+      setQuery("");
+    }
+  };
+
   return (
     <View
-      style={[
-        {backgroundColor: "#F3F7F7"},
-        t.hFull,
-        t.p8,
-        t.pT20
-      ]}
+      style={[{ backgroundColor: "#F3F7F7" }, t.hFull, t.wFull, t.p8, t.pT20]}
     >
       <TouchableHighlight
         onPress={() => {}}
@@ -31,6 +35,7 @@ export const SearchUsers = () => {
         Search By Username
       </Text>
       <TextInput
+        onChangeText={onQueryChange}
         style={[
           t.wFull,
           t.p3,
@@ -42,11 +47,16 @@ export const SearchUsers = () => {
           t.mB8,
           t.textGray700,
         ]}
-        placeholder="hello"
       />
-      {users.map((username, index) => (
-        <SearchUserListItem username={username} key={index} />
-      ))}
+      {!isLoading &&
+        users.map((username, index) => (
+          <SearchUserListItem username={username} key={index} />
+        ))}
+      {!isLoading && users.length === 0 && (
+        <Text style={[t.textGray700]}>
+          There are no users that start with "{query}"
+        </Text>
+      )}
     </View>
   );
 };
