@@ -6,7 +6,9 @@ import { SignUp } from "../components/SignUp";
 import STIDashboard from "../components/STIDashboard";
 import DocumentUploadCard from "../components/DocumentUploadCard";
 import { AccessRequests } from "../components/AccessRequests";
+import { ViewSTIResults } from "../components/ViewSTIResults";
 const Stack = createStackNavigator();
+
 function MyStack() {
   return (
     <Stack.Navigator>
@@ -27,6 +29,7 @@ function MyStack() {
       />
       <Stack.Screen name="Dashboard" component={STIDashboard} />
       <Stack.Screen name="Upload" component={DocumentUploadCard} />
+      <Stack.Screen name="View Results" component={ViewSTIResults} />
       <Stack.Screen name="Access Requests" component={AccessRequests} />
       <Stack.Screen
         options={{ headerShown: false }}

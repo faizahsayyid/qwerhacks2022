@@ -1,51 +1,52 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TextInput, TouchableHighlight } from "react-native";
-import { useState, useEffect } from "react";
-import { color, t } from 'react-native-tailwindcss';
-import { MaterialIcons } from '@expo/vector-icons';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableHighlight,
+} from "react-native";
+import { useState, useEffect, useContext } from "react";
+import { color, t } from "react-native-tailwindcss";
+import { MaterialIcons } from "@expo/vector-icons";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { RequestCard } from "./requestCard";
 import base from "../airtable";
 
-export const AccessRequests = ({navigation}) => {
-  const [requests, setRequests] = useState([])
-  const [refresh, setRefresh] = useState(true)
-  const userId = "recmp1vJp3pkboru7"
+export const AccessRequests = ({ navigation }) => {
+  const [requests, setRequests] = useState([]);
+  const [refresh, setRefresh] = useState(true);
+  const { userId } = useContext(GlobalContext);
 
   useEffect(() => {
-    let newRequests = []
+    let newRequests = [];
     base("AccessSTDRequest")
       .select({
         filterByFormula: `OR("${userId}" = {receiverID}, "${userId}" = {senderID})`,
-        })
+      })
       .eachPage((records, fetchNextPage) => {
         newRequests = [
           ...newRequests,
           ...records.map((record) => {
-            const rec = record.get('receiverID');
-            const sen = record.get('senderID');
+            const rec = record.get("receiverID");
+            const sen = record.get("senderID");
             const id = userId == rec ? sen : rec;
 
-
             return base("Users")
-            .find(id)
-            .then(record => {
-              console.log('Found', record.get('username'));
-              return record.get('username')
-            })
-            .then(u => {
-              console.log('Retrieved', u);
-
-              return {
-                requestId: record.id,
-                username: u,
-                receiver: rec,
-                sender: sen,
-                status: record.get('requestStatus'),
-              }
-            })
-            .catch(err => console.error(err));
-
+              .find(id)
+              .then((record) => {
+                return record.get("username");
+              })
+              .then((u) => {
+                return {
+                  requestId: record.id,
+                  username: u,
+                  receiver: rec,
+                  sender: sen,
+                  status: record.get("requestStatus"),
+                };
+              })
+              .catch((err) => console.error(err));
           }),
         ];
         fetchNextPage();
@@ -55,26 +56,25 @@ export const AccessRequests = ({navigation}) => {
         setRequests(p);
       })
       .catch((err) => console.error(err));
-  }, [refresh])
+  }, [refresh]);
 
   return (
-    <View style={[{backgroundColor: "#F3F7F7"}, t.p8, t.hFull]}>
-
-      {requests != [] && requests.map((record, index) => (
-        <RequestCard
-          username={record.username}
-          status={record.status}
-          receiver={record.receiver}
-          sender={record.sender}
-          requestId={record.requestId}
-          setRefresh={setRefresh}
-          refresh={refresh}
-          key={index}
+    <View style={[{ backgroundColor: "#F3F7F7" }, t.p8, t.hFull]}>
+      {requests != [] &&
+        requests.map((record, index) => (
+          <RequestCard
+            username={record.username}
+            status={record.status}
+            receiver={record.receiver}
+            sender={record.sender}
+            requestId={record.requestId}
+            setRefresh={setRefresh}
+            refresh={refresh}
+            key={index}
           />
         ))}
 
-
-      <StatusBar style="dark"/>
+      <StatusBar style="dark" />
     </View>
   );
 };
