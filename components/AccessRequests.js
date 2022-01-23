@@ -30,11 +30,11 @@ export const AccessRequests = ({navigation}) => {
             return base("Users")
             .find(id)
             .then(record => {
-              console.log('Found', record.get('username'));
+              // console.log('Found', record.get('username'));
               return record.get('username')
             })
             .then(u => {
-              console.log('Retrieved', u);
+              // console.log('Retrieved', u);
 
               return {
                 requestId: record.id,

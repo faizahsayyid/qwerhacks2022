@@ -4,7 +4,7 @@ import AppLoading from 'expo-app-loading';
 import {AntDesign} from '@expo/vector-icons';
 import { color, t } from 'react-native-tailwindcss';
 
-function DashboardCard({STDName, status, navigation, onPress}){
+function DashboardCard({STDName, status, onPress}){
         let [fontsLoaded] = useFonts({
             'Inter': require('../assets/fonts/Inter-Regular.ttf'),
           });
