@@ -1,18 +1,35 @@
-import React from "react";
 import { Modal, View, Text, TouchableHighlight, Alert } from "react-native";
 import { t } from "react-native-tailwindcss";
 import { useNavigation } from "@react-navigation/native";
+import { useContext } from "react";
+import { GlobalContext } from "../contexts/GlobalContext";
+import base from "../airtable";
 
-export const SendRequestModal = ({ visible, setVisible, username }) => {
+export const SendRequestModal = ({ visible, setVisible, username, id }) => {
   const navigation = useNavigation();
+  const { userId } = useContext(GlobalContext);
 
   const onYes = () => {
-    Alert.alert("Access STD Status Request Sent");
-    navigation.navigate("Access Requests");
-    setVisible(!visible);
+    sendRequest(id).then(() => {
+      Alert.alert("Access STD Status Request Sent");
+      navigation.navigate("Access Requests");
+      setVisible(!visible);
+    });
   };
   const onNo = () => {
     setVisible(!visible);
+  };
+
+  const sendRequest = (receiverId) => {
+    return base("AccessSTDRequest").create([
+      {
+        fields: {
+          receiverID: [receiverId],
+          senderID: [userId],
+          requestStatus: "Pending",
+        },
+      },
+    ]);
   };
 
   return (

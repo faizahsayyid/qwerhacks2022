@@ -51,8 +51,12 @@ export const SearchUsers = ({ navigation }) => {
         ]}
       />
       {!isLoading &&
-        users.map((username, index) => (
-          <SearchUserListItem username={username} key={index} />
+        users.map((user, index) => (
+          <SearchUserListItem
+            username={user.username}
+            id={user.id}
+            key={index}
+          />
         ))}
       {!isLoading && users.length === 0 && (
         <Text style={[t.textGray700]}>

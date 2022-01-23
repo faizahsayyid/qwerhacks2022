@@ -4,7 +4,7 @@ import { t, color } from "react-native-tailwindcss";
 import { useState } from "react";
 import { SendRequestModal } from "./SendRequestModal";
 
-export const SearchUserListItem = ({ username }) => {
+export const SearchUserListItem = ({ username, id }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -13,6 +13,7 @@ export const SearchUserListItem = ({ username }) => {
         visible={modalVisible}
         setVisible={setModalVisible}
         username={username}
+        id={id}
       />
       <TouchableHighlight
         style={[

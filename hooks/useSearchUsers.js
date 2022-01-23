@@ -15,7 +15,7 @@ const useSearchUsers = () => {
         newUsers = [
           ...newUsers,
           ...records.map((record) => {
-            return record.get("username");
+            return { username: record.get("username"), id: record.get("id") };
           }),
         ];
         fetchNextPage();
@@ -43,7 +43,7 @@ const useSearchUsers = () => {
           newUsers = [
             ...newUsers,
             ...records.map((record) => {
-              return record.get("username");
+              return { username: record.get("username"), id: record.get("id") };
             }),
           ];
           fetchNextPage();
