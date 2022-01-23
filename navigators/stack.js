@@ -25,8 +25,8 @@ function MyStack() {
         name="Signup Page"
         component={SignUp}
       />
-      <Stack.Screen name="Dashboard Page" component={STIDashboard} />
-      <Stack.Screen name="Upload Page" component={DocumentUploadCard} />
+      <Stack.Screen name="Dashboard" component={STIDashboard} />
+      <Stack.Screen name="Upload" component={DocumentUploadCard} />
       <Stack.Screen name="Access Requests" component={AccessRequests} />
       <Stack.Screen
         options={{ headerShown: false }}

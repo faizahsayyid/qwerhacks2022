@@ -44,7 +44,7 @@ const useSignUp = (navigation) => {
               setError(null);
               setHasSignedUp(true);
               setTimeout(() => {
-                navigation.navigate("Dashboard Page");
+                navigation.navigate("Dashboard");
               }, 500);
             }
           );
