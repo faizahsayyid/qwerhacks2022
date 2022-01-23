@@ -4,6 +4,8 @@ import { GLOBAL_ACTIONS } from "./GlobalActions";
 
 const initialState = {
   userId: "",
+  isLoggedIn: false,
+  username: "",
 };
 
 export const GlobalContext = createContext(initialState);
@@ -15,11 +17,23 @@ export const GlobalProvider = ({ children }) => {
     dispatch({ type: GLOBAL_ACTIONS.SET_USER_ID, payload: userId });
   };
 
+  const setIsLoggedIn = (value) => {
+    dispatch({ type: GLOBAL_ACTIONS.SET_IS_LOGGED_IN, payload: value });
+  };
+
+  const setUsername = (username) => {
+    dispatch({ type: GLOBAL_ACTIONS.SET_USERNAME, payload: username });
+  };
+
   return (
     <GlobalContext.Provider
       value={{
         userId: state.userId,
+        isLoggedIn: state.isLoggedIn,
+        username: state.username,
         setUserId,
+        setIsLoggedIn,
+        setUsername,
       }}
     >
       {children}

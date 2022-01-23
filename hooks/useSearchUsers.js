@@ -10,12 +10,12 @@ const useSearchUsers = () => {
     let newUsers = [];
     setIsLoading(true);
     base("Users")
-      .select({ view: "Grid view" })
+      .select({ view: "Grid view", maxRecords: 8 })
       .eachPage((records, fetchNextPage) => {
         newUsers = [
           ...newUsers,
           ...records.map((record) => {
-            return record.get("username");
+            return { username: record.get("username"), id: record.get("id") };
           }),
         ];
         fetchNextPage();
@@ -43,7 +43,7 @@ const useSearchUsers = () => {
           newUsers = [
             ...newUsers,
             ...records.map((record) => {
-              return record.get("username");
+              return { username: record.get("username"), id: record.get("id") };
             }),
           ];
           fetchNextPage();

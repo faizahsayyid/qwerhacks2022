@@ -4,6 +4,8 @@ import DashboardCard from './DashboardCard';
 import {useFonts} from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import base from '../airtable';
+import { color, t } from 'react-native-tailwindcss';
+import { MaterialIcons } from '@expo/vector-icons';
 
 // const STIObjects=[{STDName: "Chlamydia", status: "Positive"},
 // {STDName:"Gonorrhea", status:"Negative"},
@@ -36,6 +38,7 @@ function STIDashboard({navigation, route}){
         FetchSTIs();
     },[])
 
+
     let [fontsLoaded] = useFonts({
         'Inter': require('../assets/fonts/Inter-Regular.ttf'),
       });
@@ -45,31 +48,38 @@ function STIDashboard({navigation, route}){
       else{
         return(
             <ScrollView>
-              <View style={styles.container}>
-                <View><Text style={{fontWeight:'bold', fontSize:14, margin:20, marginLeft:30, letterSpacing:0.8}}>{userName.toUpperCase()} SEXUAL HEALTH</Text></View>
-                <View style={{  display:'flex', alignItems:'center'}}>
+              <View style={[{backgroundColor: "#F3F7F7"}, t.p8, t.hFull]}>
+                <View style={[t.mB4, t.flexRow, t.justifyBetween, t.itemsEnd]}>
+                  <Text style={[t.fontBold, t.textSm, t.trackingWider, t.textGray700]}>{userName.toUpperCase()} SEXUAL HEALTH</Text>
+
+                  <View style={[t.flexRow]}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Search Users')} >
+                      <MaterialIcons style={[t.mR4]} name="person-add" size={36} color="#374151" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('Access Requests')} >
+                      <MaterialIcons name="notifications" size={36} color="#374151" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+
+                <View>
                 {STIObject.map((element)=>{
-                    return(<DashboardCard STDName={element.STIName} status={element.status} child={element.STDName} 
+                    return(<DashboardCard STDName={element.STDName} status={element.status} child={element.STDName}
                         onPress={()=>{navigation.navigate('Upload Page',{
                             STDName:element.STIName,
                             status:element.status,
                             id:id
                         })}}/>)
                 })}
-                </View>  
+                </View>
               </View>
             </ScrollView>
             )
       }
 }
 
-const styles = StyleSheet.create({
-    container: {
-      backgroundColor: '#f3f7f7',
-      height:Dimensions.get('window').height,
-      width:Dimensions.get('window').width,
-      flex:1
-    },
-  });
-  
+
+
 export default STIDashboard;

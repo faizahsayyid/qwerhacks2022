@@ -7,6 +7,16 @@ const GlobalReducer = (state, action) => {
         ...state,
         userId: action.payload,
       };
+    case GLOBAL_ACTIONS.SET_IS_LOGGED_IN:
+      return {
+        ...state,
+        isLoggedIn: action.payload,
+      };
+    case GLOBAL_ACTIONS.SET_USERNAME:
+      return {
+        ...state,
+        username: action.payload,
+      };
     default:
       return state;
   }
