@@ -5,12 +5,12 @@ export const LoginSignUpForm = ({ onUsernameChange, onPasswordChange }) => {
   return (
     <>
       <Text style={label}>Username</Text>
-      <TextInput style={input} onChange={onUsernameChange} />
+      <TextInput style={input} onChangeText={onUsernameChange} />
       <Text style={label}>Password</Text>
       <TextInput
         secureTextEntry={true}
         style={input}
-        onChange={onPasswordChange}
+        onChangeText={onPasswordChange}
       />
     </>
   );
