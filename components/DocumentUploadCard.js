@@ -35,7 +35,7 @@ const PickerFormer=(initialValue)=>{
 
 function DocumentUploadCard({route, navigation}){
   const [path, setPath] = useState('');
-  const {STDName, status, id, onNavigateBack}=route.params;
+  const {STDName, status, id, documentId}=route.params;
   const [selectedValue, setSelectedValue] = useState(status);
 
   const takeImage = async () => {
@@ -89,6 +89,7 @@ function DocumentUploadCard({route, navigation}){
   function uploadFile() {
     if (path) {
       const fileToUpload =path;
+      let shouldUpdate=false;
       base('Documents').create([
         {
           "fields": {
@@ -117,7 +118,7 @@ function DocumentUploadCard({route, navigation}){
 
   function updateStatus(){
     let resultsid="";
-    let userid=[id];
+    let documents=[];
     let retrievedName="";
     if(selectedValue!==status){
       base('Users').find(id, (err, records)=>{
@@ -150,6 +151,36 @@ function DocumentUploadCard({route, navigation}){
         })
       })
     }
+    if(path){
+      base('Documents').find(documentId,(err, records)=>{
+        if(err){console.log(err);return;}
+        documents=records.get('documentFile');
+        if(!documents){
+          uploadFile();
+        }
+        else{
+          base('Documents').update([
+            {
+              "id": documentId,
+              "fields": {
+                "documentFile": [
+                  {
+                    "url": path?path:''
+                  }
+                ]
+              }
+            },
+          ], function(err, records) {
+            if (err) {
+              console.error(err);
+              return;
+            }
+          });
+        }
+        
+
+      })
+    }
   }
         let [fontsLoaded] = useFonts({
             'Inter': require('../assets/fonts/Inter-Regular.ttf'),
@@ -170,7 +201,7 @@ function DocumentUploadCard({route, navigation}){
       >
       <Picker.Item label="Positive" value="Positive" selected='true' />
       <Picker.Item label="Negative" value="Negative"/>
-      <Picker.Item label="Not uploaded" value= "Not uploaded"/>
+      <Picker.Item label="Not uploaded" value= "not uploaded"/>
       {/* <Picker.Item label="Not applicable" value="NA"/> */}
     </Picker>
                   </View>
@@ -184,7 +215,7 @@ function DocumentUploadCard({route, navigation}){
                 <View style={{display:'flex', alignItems:'center', justifyContent:'center', marginTop:32}}>
                   {path!=="" && <Image source={{uri: path}} style={{width:300, height:300}} />}
                 <TouchableOpacity style={{backgroundColor:'#374151', width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20, marginBottom:10}} onPress={takeImage}><Text style={{color:'#FFF', fontSize:18, fontWeight:'bold', letterSpacing:0.8}}>SELECT FILE</Text></TouchableOpacity>
-                <TouchableOpacity style={{backgroundColor:'#14B8A6', width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20, marginBottom:10}} onPress={uploadFile}><Text style={{color:'#FFF', fontSize:18, fontWeight:'bold',letterSpacing:0.8}}>UPLOAD</Text></TouchableOpacity>
+                {/* <TouchableOpacity style={{backgroundColor:'#14B8A6', width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20, marginBottom:10}} onPress={uploadFile}><Text style={{color:'#FFF', fontSize:18, fontWeight:'bold',letterSpacing:0.8}}>UPLOAD</Text></TouchableOpacity> */}
                 <TouchableOpacity style={{width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20, borderWidth:3, borderColor:'#14B8A6'}} onPress={updateStatus}><Text style={{color:'#374151', fontSize:18, fontWeight:'bold',letterSpacing:0.8}}>SAVE</Text></TouchableOpacity>
                 </View>
               </View>
