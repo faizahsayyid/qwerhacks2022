@@ -24,7 +24,7 @@ const PickerFormer=(initialValue)=>{
       <Picker
         selectedValue={selectedValue}
         style={{ height: 50, backgroundColor:'#003366', color:'#03DAC5', }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        onValueChange={(itemValue, itemIndex) => {setSelectedValue(itemValue);}}
       >
       <Picker.Item label="Positive" value="+ve" selected='true' />
       <Picker.Item label="Negative" value="-ve"/>
@@ -49,7 +49,6 @@ function DocumentUploadCard({route}){
       base64: true});
 
       let base64Img = `data:image/jpg;base64,${image.base64}`;
-
       let data = {
         "file": base64Img,
         "upload_preset": "vhrwepzr",
@@ -61,14 +60,14 @@ function DocumentUploadCard({route}){
           'content-type': 'application/json'
         },
         method: 'POST',
-      }).then(async r => {
-        let data = await r.json()
-  
-  //Here I'm using another hook to set State for the photo that we get back //from Cloudinary
-  
-       setPath(data.url);
-       console.log(path);
-      }).catch(err => console.log(err))
+      }).then(res => res.json()  
+      //  setPath(data.url);
+      //  console.log(path);
+      ).then(
+        res=>{setPath(res.secure_url);}
+      )/*.catch(err => console.log(err))*/
+
+
     // cloudinary.uploader.upload("image.uri",{resource_type:"image",})
     // .then(resp => resp.json())
     // .then(data => {
@@ -87,6 +86,7 @@ function DocumentUploadCard({route}){
     // })
   }catch{(err)=>console.error(err)}
   };
+
   function uploadFile() {
     if (path) {
       const fileToUpload =path;
@@ -108,15 +108,84 @@ function DocumentUploadCard({route}){
           console.error(err);
           return;
         }
-        records.forEach(function (record) {
-          console.log(record.getId());
-        });
+        setPath("");
       });
     } 
     else {
       alert('Please Select File first');
     }
   };
+
+  function updateStatus(){
+    let resultsid="";
+    let userid=[id];
+    let retrievedName="";
+    if(selectedValue!==status){
+      base('STDResults').select({
+        // Selecting the first 3 records in Grid view:
+        view: "Grid view",
+        filterByFormula:`AND({Users}=\"${userid}\",{STDName}=\"${STDName})`
+
+    }).eachPage(function page(records, fetchNextPage) {
+      resultsid=records.fields.id
+        // This function (`page`) will get called for each page of records.
+        base('STDResults').update([
+          {
+            "id": resultsid,
+            "fields": {
+              "status": selectedValue,
+              "STDName": STDName,
+            }
+          },
+        ], function(err, records) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          records.forEach(function(record) {
+            console.log(record.get('status'));
+          });
+        });
+    
+        // To fetch the next page of records, call `fetchNextPage`.
+        // If there are more records, `page` will get called again.
+        // If there are no more records, `done` will get called.
+        fetchNextPage();
+    
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
+      // base('Users').find(id, (err, records)=>{
+      //   if(err){console.log(err); return;}
+      //   resultsid=records.fields.STDResultsID;
+      //   resultsid.forEach((elementid)=>{
+      //     base('STDResults').find(elementid, (error, record)=>{
+      //       if(err){console.log(err); return;}
+      //       retrievedName=records.fields.STDName;
+      //       if(retrievedName==STDName){
+              // base('STDResults').update([
+              //   {
+              //     "id": id,
+              //     "fields": {
+              //       "status": selectedValue,
+              //       "STDName": STDName,
+              //     }
+              //   },
+              // ], function(err, records) {
+              //   if (err) {
+              //     console.error(err);
+              //     return;
+              //   }
+              //   records.forEach(function(record) {
+              //     console.log(record.get('status'));
+              //   });
+              // });
+      //       }
+      //     })
+      //   })
+      // })
+    }
+  }
         let [fontsLoaded] = useFonts({
             'Inter': require('../assets/fonts/Inter-Regular.ttf'),
           });
@@ -126,7 +195,7 @@ function DocumentUploadCard({route}){
           else{
             return(
               <View style={styles.container}>
-                <View style={ {display:'flex', flexDirection:'row', justifyContent:'space-around'}}>
+                <View style={ {display:'flex', marginTop:30, flexDirection:'row', justifyContent:'space-around'}}>
                   <View>
                     <Text style={{fontFamily:'Inter', color:'#14B8A6', fontSize:24}}>{STDName}</Text>
                     <Picker
@@ -134,23 +203,24 @@ function DocumentUploadCard({route}){
         style={{ height: 50, color:'black', width:170 }}
         onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
       >
-      <Picker.Item label="Positive" value="+ve" selected='true' />
-      <Picker.Item label="Negative" value="-ve"/>
-      <Picker.Item label="No Result" value= "--"/>
-      <Picker.Item label="Not applicable" value="NA"/>
+      <Picker.Item label="Positive" value="Positive" selected='true' />
+      <Picker.Item label="Negative" value="Negative"/>
+      <Picker.Item label="Not uploaded" value= "Not uploaded"/>
+      {/* <Picker.Item label="Not applicable" value="NA"/> */}
     </Picker>
                   </View>
                   <View>
-                    {selectedValue==="+ve"? <TouchableOpacity style={{backgroundColor:'#14B8A6', width:58.45, height: 58.45, borderRadius:50, display:'flex', alignItems:'center', justifyContent:'center'}}><AntDesign name="plus" size={24} color="white" /></TouchableOpacity>:
-                     selectedValue==="-ve"? <TouchableOpacity style={{borderColor:'#14B8A6', width:58.45, height: 58.45, borderRadius:50, borderWidth:2, display:'flex', alignItems:'center', justifyContent:'center'}}><AntDesign name="minus" size={34} color="#14B8A6" /></TouchableOpacity> :
+                    {selectedValue==="Positive"? <TouchableOpacity style={{backgroundColor:'#14B8A6', width:58.45, height: 58.45, borderRadius:50, display:'flex', alignItems:'center', justifyContent:'center'}}><AntDesign name="plus" size={24} color="white" /></TouchableOpacity>:
+                     selectedValue==="Negative"? <TouchableOpacity style={{borderColor:'#14B8A6', width:58.45, height: 58.45, borderRadius:50, borderWidth:2, display:'flex', alignItems:'center', justifyContent:'center'}}><AntDesign name="minus" size={34} color="#14B8A6" /></TouchableOpacity> :
                     <Text style={{fontFamily:'Inter', marginTop:15, color:'#374151', fontSize:18}}>Pending</Text>}
                     
                   </View>
                 </View>
                 <View style={{display:'flex', alignItems:'center', justifyContent:'center', marginTop:32}}>
-                  {/* {path!="" && <Image source={path} style={{width:300, height:300}} />} */}
-                <TouchableOpacity style={{backgroundColor:'#374151', width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20}} onPress={takeImage}><Text style={{color:'#FFF', fontSize:18, fontWeight:'bold'}}>SELECT FILE</Text></TouchableOpacity>
-                  <TouchableOpacity style={{backgroundColor:'#374151', width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20}} onPress={uploadFile}><Text style={{color:'#FFF', fontSize:18, fontWeight:'bold'}}>UPLOAD</Text></TouchableOpacity>
+                  {path!=="" && <Image source={{uri: path}} style={{width:300, height:300}} />}
+                <TouchableOpacity style={{backgroundColor:'#374151', width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20, marginBottom:10}} onPress={takeImage}><Text style={{color:'#FFF', fontSize:18, fontWeight:'bold', letterSpacing:0.8}}>SELECT FILE</Text></TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor:'#14B8A6', width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20, marginBottom:10}} onPress={uploadFile}><Text style={{color:'#FFF', fontSize:18, fontWeight:'bold',letterSpacing:0.8}}>UPLOAD</Text></TouchableOpacity>
+                <TouchableOpacity style={{width:311, height: 58.45, display:'flex', alignItems:'center', justifyContent:'center', borderRadius:20, borderWidth:3, borderColor:'#14B8A6'}} onPress={updateStatus}><Text style={{color:'#374151', fontSize:18, fontWeight:'bold',letterSpacing:0.8}}>SAVE</Text></TouchableOpacity>
                 </View>
               </View>
             )

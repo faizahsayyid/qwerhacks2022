@@ -1,3 +1,4 @@
+
 import {
   StyleSheet,
   Text,
@@ -28,6 +29,7 @@ export const RequestCard = ({
     base("AccessSTDRequest")
       .update([
         {
+
           id: requestId,
           fields: {
             requestStatus: "Accepted",
@@ -76,6 +78,7 @@ export const RequestCard = ({
     const userIsReceiver = userId == receiver[0];
     console.log("userId", userId);
 
+
     if (userIsReceiver) {
       rightContent = (
         <View style={[t.flexRow]}>
@@ -95,6 +98,7 @@ export const RequestCard = ({
     } else {
       rightContent = <Text style={[t.textGray500]}>Pending</Text>;
     }
+
   } else if (status == "Accepted") {
     rightContent = <Text style={[t.textTeal500]}>Connected</Text>;
   } else {

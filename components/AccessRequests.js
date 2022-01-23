@@ -33,6 +33,7 @@ export const AccessRequests = ({ navigation }) => {
             const id = userId == rec ? sen : rec;
 
             return base("Users")
+
               .find(id)
               .then((record) => {
                 return record.get("username");
@@ -56,6 +57,7 @@ export const AccessRequests = ({ navigation }) => {
         setRequests(p);
       })
       .catch((err) => console.error(err));
+
   }, [refresh]);
 
   return (
@@ -71,6 +73,7 @@ export const AccessRequests = ({ navigation }) => {
             setRefresh={setRefresh}
             refresh={refresh}
             key={index}
+
           />
         ))}
 
