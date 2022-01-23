@@ -27,7 +27,7 @@ const useLogin = (navigation) => {
           setUserId(records[0].get("id"));
           setIsLoggedIn(true);
           setUsername(username);
-          navigation.navigate("Dashboard Page");
+          navigation.navigate("Dashboard");
         } else {
           setError(true);
         }
