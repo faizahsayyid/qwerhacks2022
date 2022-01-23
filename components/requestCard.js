@@ -1,31 +1,48 @@
-import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
-import { useContext } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useContext, useState } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
 import { color, t } from "react-native-tailwindcss";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import base from "../airtable";
 
-export const RequestCard = ({ username, receiver, sender, status }) => {
+export const RequestCard = ({
+  requestId,
+  username,
+  receiver,
+  sender,
+  status,
+  setRefresh,
+  refresh,
+}) => {
   // const { userId } = useContext(GlobalContext);
   const userId = "recmp1vJp3pkboru7";
-  const navigation = useNavigation();
 
   const acceptRequest = () => {
-    alert(`Accepted connection request from ${username}`);
+    base("AccessSTDRequest")
+      .update([
+        {
+          id: requestId,
+          fields: {
+            requestStatus: "Accepted",
+          },
+        },
+      ])
+      .then(() => setRefresh(!refresh))
+      .catch((err) => console.log(err));
   };
 
   const rejectRequest = () => {
-    alert(`Rejected connection request from ${username}`);
-  };
-
-  const onCardPressed = () => {
-    if (userId === sender && status === "Pending") {
-      alert(`${username} has not responded to your request`);
-    } else if (status === "Accepted" && user == sender) {
-      navigation.navigate("", { id: receiver });
-    } else if (status === "Accepted" && user == receiver) {
-      navigation.navigate("", { id: sender });
-    }
+    setRefresh(!refresh);
+    base("AccessSTDRequest")
+      .update([
+        {
+          id: requestId,
+          fields: {
+            requestStatus: "Rejected",
+          },
+        },
+      ])
+      .catch((err) => console.log(err));
   };
 
   let rightContent;
@@ -37,28 +54,30 @@ export const RequestCard = ({ username, receiver, sender, status }) => {
     if (userIsReceiver) {
       rightContent = (
         <View style={[t.flexRow]}>
-          <TouchableHighlight onPress={acceptRequest}>
+          <TouchableOpacity onPress={acceptRequest}>
             <MaterialIcons
               style={[t.mR4]}
               name="check-circle"
               size={28}
               color="#38b2ac"
             />
-          </TouchableHighlight>
-          <TouchableHighlight onPress={rejectRequest}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={rejectRequest}>
             <MaterialIcons name="cancel" size={28} color="#e53e3e" />
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
       );
     } else {
       rightContent = <Text style={[t.textGray500]}>Pending</Text>;
     }
+  } else if (status == "Accepted") {
+    rightContent = <Text style={[t.textTeal500]}>Connected</Text>;
   } else {
-    rightContent = <Text style={[t.textTeal500]}>Accepted</Text>;
+    rightContent = <Text style={[t.textRed600]}>Rejected</Text>;
   }
 
   return (
-    <TouchableHighlight
+    <View
       style={[
         t.flexRow,
         t.itemsCenter,
@@ -69,13 +88,11 @@ export const RequestCard = ({ username, receiver, sender, status }) => {
         t.roundedLg,
         t.mB2,
       ]}
-      disabled={userId === receiver && status === "Pending"}
-      onPress={onCardPressed}
     >
       <Text style={[t.textGray700]}>{username}</Text>
 
       {rightContent}
-    </TouchableHighlight>
+    </View>
   );
 };
 
