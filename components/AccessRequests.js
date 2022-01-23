@@ -20,34 +20,37 @@ export const AccessRequests = ({navigation}) => {
       .eachPage((records, fetchNextPage) => {
         newRequests = [
           ...newRequests,
-          ...records.map(async (record) => {
+          ...records.map((record) => {
             const rec = record.get('receiverID');
             const sen = record.get('senderID');
             const id = userId == rec ? sen : rec;
 
-            let username = ""
 
-            await base("Users").find(id, function(err, record) {
-              if (err) { console.error(err); return; }
+            return base("Users")
+            .find(id)
+            .then(record => {
               console.log('Found', record.get('username'));
-              username = record.get('username')
+              return record.get('username')
             })
+            .then(u => {
+              console.log('Retrieved', u);
 
-            // username resolves as undefined even though it's Found in line 30
-
-            console.log('Retrieved', username);
-
-            return {
-              username: username,
-              status: record.get('requestStatus'),
-            }
+              return {
+                username: u,
+                receiver: rec,
+                sender: sen,
+                status: record.get('requestStatus'),
+              }
+            })
+            .catch(err => console.error(err));
 
           }),
         ];
         fetchNextPage();
       })
-      .then(() => {
-        setRequests(newRequests);
+      .then(async () => {
+        const p = await Promise.all(newRequests);
+        setRequests(p);
       })
       .catch((err) => console.error(err));
   }, [])
@@ -58,8 +61,12 @@ export const AccessRequests = ({navigation}) => {
       {requests != [] && requests.map((record, index) => (
         <RequestCard
           username={record.username}
-          status="Pending" key={index}/>
+          status={record.status}
+          receiver={record.receiver}
+          sender={record.sender}
+          key={index}/>
         ))}
+
 
       <StatusBar style="dark"/>
     </View>
