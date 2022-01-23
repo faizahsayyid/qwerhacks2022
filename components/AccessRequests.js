@@ -9,6 +9,7 @@ import base from "../airtable";
 
 export const AccessRequests = ({navigation}) => {
   const [requests, setRequests] = useState([])
+  const [refresh, setRefresh] = useState(true)
   const userId = "recmp1vJp3pkboru7"
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export const AccessRequests = ({navigation}) => {
               console.log('Retrieved', u);
 
               return {
+                requestId: record.id,
                 username: u,
                 receiver: rec,
                 sender: sen,
@@ -53,7 +55,7 @@ export const AccessRequests = ({navigation}) => {
         setRequests(p);
       })
       .catch((err) => console.error(err));
-  }, [])
+  }, [refresh])
 
   return (
     <View style={[{backgroundColor: "#F3F7F7"}, t.p8, t.hFull]}>
@@ -64,7 +66,11 @@ export const AccessRequests = ({navigation}) => {
           status={record.status}
           receiver={record.receiver}
           sender={record.sender}
-          key={index}/>
+          requestId={record.requestId}
+          setRefresh={setRefresh}
+          refresh={refresh}
+          key={index}
+          />
         ))}
 
 
