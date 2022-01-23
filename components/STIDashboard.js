@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
-import { useState, useEffect,useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import DashboardCard from "./DashboardCard";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -90,13 +90,17 @@ function STIDashboard({ navigation, route }) {
   } else {
     return (
       <ScrollView
-      refreshControl={!disabled &&
-        <RefreshControl
-          progressBackgroundColor="red"
-          tintColor="red"
-          refreshing={loading}
-          onRefresh={loadMore}
-        />}>
+        refreshControl={
+          !disabled && (
+            <RefreshControl
+              progressBackgroundColor="red"
+              tintColor="red"
+              refreshing={loading}
+              onRefresh={loadMore}
+            />
+          )
+        }
+      >
         <View style={[{ backgroundColor: "#F3F7F7" }, t.p8, t.hFull]}>
           <View style={[t.mB4, t.flexRow, t.justifyBetween, t.itemsEnd]}>
             <Text
@@ -138,9 +142,10 @@ function STIDashboard({ navigation, route }) {
           </View>
 
           <View>
-            {STIObject.map((element) => {
+            {STIObject.map((element, index) => {
               return (
                 <DashboardCard
+                  key={index}
                   STDName={element.STIName}
                   status={element.status}
                   child={element.STDName}
