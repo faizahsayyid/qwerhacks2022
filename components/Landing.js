@@ -13,7 +13,7 @@ export const Landing = ({navigation}) => {
         resizeMode="contain"
         // style={[{ flex: 1, aspectRatio: 1.5, resizeMode: "contain" }]}
       /> */}
-      <TouchableOpacity style={[t.bgTeal500, t.w3_4, t.pY5, t.roundedFull, t.mT12]} onPress={()=>{navigation.navigate('Login Page')}}>
+      <TouchableOpacity style={[t.bgTeal500, t.w3_4, t.pY5, t.roundedFull, t.mT12]} onPress={()=>{navigation.navigate('Dashboard Page',{id:'recmp1vJp3pkboru7'})}}>
         <Text
           style={[t.uppercase, t.textWhite, t.fontBold, t.textCenter, t.textLg]}
         >
