@@ -7,7 +7,6 @@ import {Picker} from '@react-native-picker/picker';
 import base from '../airtable';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 
 // require("dotenv").config();
 // const cloudinary=require("cloudinary").v2;
@@ -34,9 +33,9 @@ const PickerFormer=(initialValue)=>{
     );
 }
 
-function DocumentUploadCard({route}){
+function DocumentUploadCard({route, navigation}){
   const [path, setPath] = useState('');
-  const {STDName, status, id}=route.params;
+  const {STDName, status, id, onNavigateBack}=route.params;
   const [selectedValue, setSelectedValue] = useState(status);
 
   const takeImage = async () => {
@@ -121,69 +120,35 @@ function DocumentUploadCard({route}){
     let userid=[id];
     let retrievedName="";
     if(selectedValue!==status){
-      base('STDResults').select({
-        // Selecting the first 3 records in Grid view:
-        view: "Grid view",
-        filterByFormula:`AND({Users}=\"${userid}\",{STDName}=\"${STDName})`
-
-    }).eachPage(function page(records, fetchNextPage) {
-      resultsid=records.fields.id
-        // This function (`page`) will get called for each page of records.
-        base('STDResults').update([
-          {
-            "id": resultsid,
-            "fields": {
-              "status": selectedValue,
-              "STDName": STDName,
+      base('Users').find(id, (err, records)=>{
+        if(err){console.log(err); return;}
+        resultsid=records.fields.STDResultsID;
+        resultsid.forEach((elementid)=>{
+          base('STDResults').find(elementid, (error, record)=>{
+            if(error){console.log(error); return;}
+            retrievedName=record.get('STDName');
+            if(retrievedName==STDName){
+              base('STDResults').update([
+                {
+                  "id": elementid,
+                  "fields": {
+                    "status": selectedValue,
+                    "STDName": STDName,
+                  }
+                },
+              ], function(err) {
+                if (err) {
+                  console.error(err);
+                  return;
+                }
+               navigation.goBack();
+              });
             }
-          },
-        ], function(err, records) {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          records.forEach(function(record) {
-            console.log(record.get('status'));
-          });
-        });
-    
-        // To fetch the next page of records, call `fetchNextPage`.
-        // If there are more records, `page` will get called again.
-        // If there are no more records, `done` will get called.
-        fetchNextPage();
-    
-    }, function done(err) {
-        if (err) { console.error(err); return; }
-    });
-      // base('Users').find(id, (err, records)=>{
-      //   if(err){console.log(err); return;}
-      //   resultsid=records.fields.STDResultsID;
-      //   resultsid.forEach((elementid)=>{
-      //     base('STDResults').find(elementid, (error, record)=>{
-      //       if(err){console.log(err); return;}
-      //       retrievedName=records.fields.STDName;
-      //       if(retrievedName==STDName){
-              // base('STDResults').update([
-              //   {
-              //     "id": id,
-              //     "fields": {
-              //       "status": selectedValue,
-              //       "STDName": STDName,
-              //     }
-              //   },
-              // ], function(err, records) {
-              //   if (err) {
-              //     console.error(err);
-              //     return;
-              //   }
-              //   records.forEach(function(record) {
-              //     console.log(record.get('status'));
-              //   });
-              // });
-      //       }
-      //     })
-      //   })
-      // })
+            console.log(retrievedName);
+            console.log(STDName);
+          })
+        })
+      })
     }
   }
         let [fontsLoaded] = useFonts({

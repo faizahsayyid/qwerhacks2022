@@ -13,17 +13,19 @@ export const ViewSTIResults = ({ route, navigation }) => {
           console.error(err);
           return;
         }
-        setDocument(record.get("url"));
+        setDocument(record.fields.documentFile[0].thumbnails.large.url);
       });
     }
   }, [documentId]);
 
   return (
-    <View>
-      <Text>
-        {STDName} {status} {id} {documentId} {document}
-      </Text>
-      <Image source={{ uri: document }} />
+    <View style={{backgroundColor:"#FFF"}}>
+      <Text style={{fontFamily:'Inter', color:'#374151', fontSize:24, marginTop:10, marginLeft:20}}>{STDName}</Text>
+      {status=="Positive"?<Text style={{fontFamily:'Inter', color:'#DC2626', fontSize:24,marginLeft:20,marginTop:10}}>{status}</Text>:
+      status=="Negative"?<Text style={{fontFamily:'Inter', color:'#14B8A6', fontSize:24,marginLeft:20,marginTop:10}}>{status}</Text>:
+      <Text style={{fontFamily:'Inter', color:'#374151', fontSize:24,marginLeft:20,marginTop:10}}>{status}</Text>}
+      {/* <Text>{id} {documentId}</Text> */}
+      <Image source={{ uri: document }} style={{width:300, height:300,marginLeft:20, marginTop:50}}/>
     </View>
   );
 };

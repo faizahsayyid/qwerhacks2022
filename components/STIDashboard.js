@@ -5,8 +5,9 @@ import {
   TouchableOpacity,
   Dimensions,
   ScrollView,
+  RefreshControl
 } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useCallback } from "react";
 import DashboardCard from "./DashboardCard";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -23,6 +24,15 @@ import { MaterialIcons } from "@expo/vector-icons";
 function STIDashboard({ navigation, route }) {
   const [STIObject, setSTIObject] = useState([]);
   const { id, username, disabled } = route.params;
+  const [loading, setLoading] = useState(false);
+
+  const loadMore = useCallback(async () => {
+    setLoading(true);
+    setSTIObject([]);
+    FetchSTIs();
+    setLoading(false);
+  }, [loading]);
+
   function FetchSTIs() {
     let STIIds = [];
     base("Users").find(id, function (err, record) {
@@ -67,6 +77,7 @@ function STIDashboard({ navigation, route }) {
   };
 
   useEffect(() => {
+    setSTIObject([]);
     FetchSTIs();
   }, [id, username]);
 
@@ -77,7 +88,14 @@ function STIDashboard({ navigation, route }) {
     return <AppLoading />;
   } else {
     return (
-      <ScrollView>
+      <ScrollView
+      refreshControl={!disabled &&
+        <RefreshControl
+          progressBackgroundColor="red"
+          tintColor="red"
+          refreshing={loading}
+          onRefresh={loadMore}
+        />}>
         <View style={[{ backgroundColor: "#F3F7F7" }, t.p8, t.hFull]}>
           <View style={[t.mB4, t.flexRow, t.justifyBetween, t.itemsEnd]}>
             <Text
