@@ -44,7 +44,11 @@ const useSignUp = (navigation) => {
               setError(null);
               setHasSignedUp(true);
               setTimeout(() => {
-                navigation.navigate("Dashboard");
+                navigation.navigate("Dashboard", {
+                  id: records[0].get("id"),
+                  username,
+                  disabled: false,
+                });
               }, 500);
             }
           );

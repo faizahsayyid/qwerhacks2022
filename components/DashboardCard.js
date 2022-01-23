@@ -1,8 +1,14 @@
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
-import {useFonts} from 'expo-font';
-import AppLoading from 'expo-app-loading';
-import {AntDesign} from '@expo/vector-icons';
-import { color, t } from 'react-native-tailwindcss';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
+import { AntDesign } from "@expo/vector-icons";
+import { color, t } from "react-native-tailwindcss";
 
 function DashboardCard({STDName, status, onPress}){
         let [fontsLoaded] = useFonts({
@@ -28,6 +34,5 @@ function DashboardCard({STDName, status, onPress}){
             )
           }
 }
-
 
 export default DashboardCard;
