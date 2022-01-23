@@ -5,8 +5,9 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import { color, t } from 'react-native-tailwindcss';
 import { MaterialIcons } from '@expo/vector-icons';
 
-export const RequestCard = ({username, status}) => {
-  const { setUserId } = useContext(GlobalContext);
+export const RequestCard = ({username, receiver, sender, status}) => {
+  // const { userId } = useContext(GlobalContext);
+  const userId = 'recmp1vJp3pkboru7';
 
   const acceptRequest = () => {
     alert(`Accepted connection request from ${username}`);
@@ -17,17 +18,23 @@ export const RequestCard = ({username, status}) => {
   }
 
   let rightContent;
-  if (status == "Received"){
-    rightContent = <View style={[t.flexRow]}>
-      <TouchableHighlight onPress={acceptRequest} >
-        <MaterialIcons style={[t.mR4]} name="check-circle" size={28} color="#38b2ac" />
-      </TouchableHighlight>
-      <TouchableHighlight onPress={rejectRequest} >
-        <MaterialIcons name="cancel" size={28} color="#e53e3e" />
-      </TouchableHighlight>
-    </View>
-  } else if (status == "Pending"){
-    rightContent = <Text style={[t.textGray500]}>Pending</Text>
+
+  if (status == "Pending"){
+    const userIsReceiver = userId == receiver;
+    console.log("userId", userId)
+
+    if (userIsReceiver){
+      rightContent = <View style={[t.flexRow]}>
+          <TouchableHighlight onPress={acceptRequest} >
+            <MaterialIcons style={[t.mR4]} name="check-circle" size={28} color="#38b2ac" />
+          </TouchableHighlight>
+          <TouchableHighlight onPress={rejectRequest} >
+            <MaterialIcons name="cancel" size={28} color="#e53e3e" />
+          </TouchableHighlight>
+        </View>
+    } else {
+      rightContent = <Text style={[t.textGray500]}>Pending</Text>
+    }
   } else {
     rightContent = <Text style={[t.textTeal500]}>Accepted</Text>
   }
