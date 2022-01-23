@@ -3,7 +3,7 @@ import { GlobalContext } from "../contexts/GlobalContext";
 import base from "../airtable";
 
 const useLogin = (navigation) => {
-  const { setUserId, setIsLoggedIn } = useContext(GlobalContext);
+  const { setUserId, setIsLoggedIn, setUsername } = useContext(GlobalContext);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -26,7 +26,8 @@ const useLogin = (navigation) => {
         if (records && records[0] && records[0].get("password") === password) {
           setUserId(records[0].get("id"));
           setIsLoggedIn(true);
-          navigation.navigate("Access Requests");
+          setUsername(username);
+          navigation.navigate("Dashboard Page");
         } else {
           setError(true);
         }
