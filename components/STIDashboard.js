@@ -65,6 +65,7 @@ function STIDashboard({ navigation, route }) {
         STDName,
         status,
         id,
+        documentId,
       });
     } else {
       navigation.navigate("View Results", {
