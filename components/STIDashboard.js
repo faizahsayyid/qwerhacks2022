@@ -16,15 +16,13 @@ import { MaterialIcons } from '@expo/vector-icons';
 function STIDashboard({navigation, route}){
 
     const[STIObject, setSTIObject]=useState([]);
-    const[userName, setUserName]=useState("")
-    const {id}=route.params;
+    const {id, username}=route.params;
     function FetchSTIs(){
         
         let STIIds=[];
         base('Users').find(id, function(err, record) {
             if (err) { console.error(err); return; }
             STIIds=record.fields.STDResultsID;
-            setUserName(record.fields.username);
             STIIds.forEach((element)=>{
                 base('STDResults').find(element, function(err, record){
                     if(err){console.error(err); return;}
@@ -50,7 +48,7 @@ function STIDashboard({navigation, route}){
             <ScrollView>
               <View style={[{backgroundColor: "#F3F7F7"}, t.p8, t.hFull]}>
                 <View style={[t.mB4, t.flexRow, t.justifyBetween, t.itemsEnd]}>
-                  <Text style={[t.fontBold, t.textSm, t.trackingWider, t.textGray700]}>{userName.toUpperCase()} SEXUAL HEALTH</Text>
+                  <Text style={[t.fontBold, t.textSm, t.trackingWider, t.textGray700, t.uppercase]}>{username} SEXUAL HEALTH</Text>
 
                   <View style={[t.flexRow]}>
                     <TouchableOpacity onPress={() => navigation.navigate('Search Users')} >
@@ -66,8 +64,8 @@ function STIDashboard({navigation, route}){
 
                 <View>
                 {STIObject.map((element)=>{
-                    return(<DashboardCard STDName={element.STDName} status={element.status} child={element.STDName}
-                        onPress={()=>{navigation.navigate('Upload Page',{
+                    return(<DashboardCard STDName={element.STIName} status={element.status} child={element.STDName}
+                        onPress={()=>{navigation.navigate('Upload',{
                             STDName:element.STIName,
                             status:element.status,
                             id:id
