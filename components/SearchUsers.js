@@ -4,7 +4,7 @@ import { t, color } from "react-native-tailwindcss";
 import { MaterialIcons } from "@expo/vector-icons";
 import useSearchUsers from "../hooks/useSearchUsers";
 
-export const SearchUsers = ({navigation}) => {
+export const SearchUsers = ({ navigation }) => {
   const { users, setQuery, isLoading, query } = useSearchUsers();
 
   const onQueryChange = (text) => {
@@ -20,7 +20,9 @@ export const SearchUsers = ({navigation}) => {
       style={[{ backgroundColor: "#F3F7F7" }, t.hFull, t.wFull, t.p8, t.pT20]}
     >
       <TouchableHighlight
-        onPress={() => {}}
+        onPress={() => {
+          navigation.goBack();
+        }}
         underlayColor={color.white}
         style={[t.mB4, t._mL2, t.roundedLg]}
       >

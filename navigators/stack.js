@@ -28,6 +28,11 @@ function MyStack() {
       <Stack.Screen name="Dashboard Page" component={STIDashboard} />
       <Stack.Screen name="Upload Page" component={DocumentUploadCard} />
       <Stack.Screen name="Access Requests" component={AccessRequests} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Search Users"
+        component={SearchUsers}
+      />
     </Stack.Navigator>
   );
 }

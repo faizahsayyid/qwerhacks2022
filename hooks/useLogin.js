@@ -26,7 +26,7 @@ const useLogin = (navigation) => {
         if (records && records[0] && records[0].get("password") === password) {
           setUserId(records[0].get("id"));
           setIsLoggedIn(true);
-          navigation.navigate("Access Requests");
+          navigation.navigate("Search Users");
         } else {
           setError(true);
         }
